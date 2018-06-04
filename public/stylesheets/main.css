@@ -1,0 +1,25 @@
+.thumbnail {
+    padding: 0;
+}
+
+.thumbnail img {
+    width: 100%;
+}
+
+.yc-campgrounds-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.yc-form-header {
+    text-align: center;
+}
+
+.yc-form-container {
+    width: 30%;
+    margin: 25px auto;
+}
+
+.delete-form {
+    display: inline;
+}
