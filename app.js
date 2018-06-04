@@ -34,6 +34,11 @@ app.use(methodOverride('_method'));
 app.use(flash());
 
 // =========================
+// MOMENTJS CONFIG
+// =========================
+app.locals.moment = require('moment');
+
+// =========================
 // PASSPORT CONFIG
 // =========================
 app.use(require('express-session')({
