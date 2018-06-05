@@ -67,6 +67,11 @@ app.use('/', indexRoutes);
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/comments', commentRoutes);
 
+// Catch all route redirects to root page
+app.get('*', function(req, res) {
+	res.redirect('/');
+});
+
 // =========================
 // START SERVER
 // =========================
