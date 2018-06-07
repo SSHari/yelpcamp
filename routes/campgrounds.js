@@ -1,4 +1,5 @@
 var express = require('express'),
+	utils = require('../utils'),
 	middleware = require('../middleware'),
     Campground = require('../models/campground'),
     router = express.Router();
@@ -8,10 +9,17 @@ var express = require('express'),
 // =========================
 // INDEX ROUTE
 router.get('/', function(req, res) {
-	Campground.find({}, function(err, campgrounds) {
-		if (err) {
+	var queryObj = {};
+	if (req.query.search) {
+		queryObj.name = new RegExp(utils.regexMethods.escape(req.query.search), 'gi');
+	}
+	
+	Campground.find(queryObj, function(err, campgrounds) {
+		if (err || !campgrounds) {
 			req.flash('error', 'No campgrounds could be found');
 			res.redirect('/');
+		} else if (campgrounds.length === 0) {
+			res.render('campgrounds/index', {campgrounds: campgrounds, page: 'campgrounds', errorMessage: 'No campgrounds were found with your search'});
 		} else {
 			res.render('campgrounds/index', {campgrounds: campgrounds, page: 'campgrounds'});
 		}
