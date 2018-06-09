@@ -19,7 +19,7 @@ module.exports = {
 				if (err || !campground) {
 					req.flash('error', 'The campground could not be found');
 					res.redirect('back');
-				} else if (campground.author.id.equals(req.user._id)) {
+				} else if (campground.author.id.equals(req.user._id) || req.user.isAdmin) {
 					req.campground = campground;
 					next();
 				} else {
@@ -39,7 +39,7 @@ module.exports = {
 				if (err || !comment) {
 					req.flash('error', 'The comment could not be found');
 					res.redirect('back');
-				} else if (comment.author.id.equals(req.user._id)) {
+				} else if (comment.author.id.equals(req.user._id) || req.user.isAdmin) {
 					req.comment = comment;
 					next();
 				} else {
