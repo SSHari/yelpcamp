@@ -18,16 +18,27 @@ router.get('/register', function(req, res) {
 });
 
 router.post('/register', function(req, res) {
-	var newUser = new User({username: req.body.username});
-	User.register(newUser, req.body.password, function(err, user) {
-		if (err) {
-			return res.render('register', {errorMessage: err.message});
-		}
-		passport.authenticate('local')(req, res, function() {
-			req.flash('success', 'Welcome to YelpCamp ' + user.username);
-			res.redirect('/campgrounds');
-		});
+	var newUser = new User({
+		firstName: req.body.firstName,
+		lastName: req.body.lastName,
+		email: req.body.email,
+		avatar: req.body.avatar,
+		username: req.body.username
 	});
+	
+	if (!req.body.firstName || !req.body.lastName || !req.body.email) {
+		return res.render('register', {errorMessage: 'Please provide a first name, last name and email'});
+	} else {
+		User.register(newUser, req.body.password, function(err, user) {
+			if (err) {
+				return res.render('register', {errorMessage: err.message});
+			}
+			passport.authenticate('local')(req, res, function() {
+				req.flash('success', 'Welcome to YelpCamp ' + user.username);
+				res.redirect('/campgrounds');
+			});
+		});
+	}
 });
 
 router.get('/login', function(req, res) {

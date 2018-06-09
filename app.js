@@ -12,6 +12,7 @@ var express = require('express'),
 // =========================
 var campgroundRoutes = require('./routes/campgrounds'),
 	commentRoutes = require('./routes/comments'),
+	userRoutes = require('./routes/users'),
 	indexRoutes = require('./routes/index');
 
 // =========================
@@ -66,6 +67,7 @@ app.use(function(req, res, next) {
 app.use('/', indexRoutes);
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/comments', commentRoutes);
+app.use('/users', userRoutes);
 
 // Catch all route redirects to root page
 app.get('*', function(req, res) {
