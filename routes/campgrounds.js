@@ -12,18 +12,23 @@ router.get('/', function(req, res) {
 	var queryObj = {};
 	if (req.query.search) {
 		queryObj.name = new RegExp(utils.regexMethods.escape(req.query.search), 'gi');
+		Campground.find(queryObj, function(err, campgrounds) {
+			if (err || !campgrounds || campgrounds.length === 0) {
+				res.render('campgrounds/index', {campgrounds: campgrounds, page: 'campgrounds', errorMessage: 'No campgrounds were found with your search'});
+			} else {
+				res.render('campgrounds/index', {campgrounds: campgrounds, page: 'campgrounds'});
+			}
+		});
+	} else {
+		Campground.find(queryObj, function(err, campgrounds) {
+			if (err || !campgrounds) {
+				req.flash('error', 'No campgrounds could be found');
+				res.redirect('/');
+			} else {
+				res.render('campgrounds/index', {campgrounds: campgrounds, page: 'campgrounds'});
+			}
+		});
 	}
-	
-	Campground.find(queryObj, function(err, campgrounds) {
-		if (err || !campgrounds) {
-			req.flash('error', 'No campgrounds could be found');
-			res.redirect('/');
-		} else if (campgrounds.length === 0) {
-			res.render('campgrounds/index', {campgrounds: campgrounds, page: 'campgrounds', errorMessage: 'No campgrounds were found with your search'});
-		} else {
-			res.render('campgrounds/index', {campgrounds: campgrounds, page: 'campgrounds'});
-		}
-	});
 });
 
 // NEW ROUTE
